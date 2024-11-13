@@ -1,4 +1,4 @@
-rootProject.name = "gradle-workshop"
+rootProject.name = "build-logic"
 
 pluginManagement {
     repositories {
@@ -12,5 +12,3 @@ dependencyResolutionManagement {
         mavenCentral()
     }
 }
-
-includeBuild("build-logic")
