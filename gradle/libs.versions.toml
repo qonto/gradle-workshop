@@ -3,3 +3,4 @@ kotlin = "2.1.20"
 
 [plugins]
 kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
+qonto = { id = "qonto" }
