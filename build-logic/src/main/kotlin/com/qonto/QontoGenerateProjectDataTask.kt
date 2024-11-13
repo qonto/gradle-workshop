@@ -16,8 +16,10 @@ import org.gradle.api.tasks.Internal
 import org.gradle.api.tasks.OutputDirectory
 import org.gradle.api.tasks.TaskAction
 import org.gradle.api.tasks.TaskProvider
+import org.gradle.kotlin.dsl.configure
 import org.gradle.kotlin.dsl.property
 import org.gradle.kotlin.dsl.register
+import org.jetbrains.kotlin.gradle.dsl.KotlinProjectExtension
 import org.slf4j.LoggerFactory
 
 @CacheableTask
@@ -61,8 +63,10 @@ open class QontoGenerateProjectDataTask
         logger.quiet("Project name: ${projectName.get()}")
         logger.quiet("Project version: ${projectVersion.get()}")
 
+        outputDir.get().asFile.apply {
+            mkdirs()
+        }
         outputFile.get().asFile.apply {
-            parentFile.mkdirs()
             createNewFile()
             writeText(
                 """
@@ -97,6 +101,14 @@ open class QontoGenerateProjectDataTask
 
             project.tasks.named(BasePlugin.ASSEMBLE_TASK_NAME).configure {
                 dependsOn(generateProjectData)
+            }
+
+            project.pluginManager.withPlugin("org.jetbrains.kotlin.jvm") {
+                project.configure<KotlinProjectExtension> {
+                    sourceSets.named("main") {
+                        kotlin.srcDirs(generateProjectData)
+                    }
+                }
             }
         }
     }
