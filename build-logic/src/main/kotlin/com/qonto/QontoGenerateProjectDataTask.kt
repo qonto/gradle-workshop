@@ -3,12 +3,17 @@ package com.qonto
 import javax.inject.Inject
 import org.gradle.api.DefaultTask
 import org.gradle.api.Project
+import org.gradle.api.file.DirectoryProperty
+import org.gradle.api.file.ProjectLayout
+import org.gradle.api.file.RegularFileProperty
 import org.gradle.api.logging.Logger
 import org.gradle.api.model.ObjectFactory
 import org.gradle.api.plugins.BasePlugin
 import org.gradle.api.provider.Property
 import org.gradle.api.tasks.CacheableTask
 import org.gradle.api.tasks.Input
+import org.gradle.api.tasks.Internal
+import org.gradle.api.tasks.OutputDirectory
 import org.gradle.api.tasks.TaskAction
 import org.gradle.api.tasks.TaskProvider
 import org.gradle.kotlin.dsl.property
@@ -19,7 +24,8 @@ import org.slf4j.LoggerFactory
 open class QontoGenerateProjectDataTask
 @Inject constructor(
     private val logger: Logger,
-    private val objects: ObjectFactory,
+    objects: ObjectFactory,
+    layout: ProjectLayout,
 ) : DefaultTask() {
 
     @Input
@@ -30,6 +36,18 @@ open class QontoGenerateProjectDataTask
 
     @Input
     val projectVersion: Property<String> = objects.property()
+
+    @OutputDirectory
+    val outputDir: DirectoryProperty =
+        objects
+            .directoryProperty()
+            .convention(layout.buildDirectory.dir("generated/kotlin/com/qonto"))
+
+    @Internal
+    val outputFile: RegularFileProperty =
+        objects
+            .fileProperty()
+            .convention { outputDir.file("Project.kt").get().asFile }
 
     init {
         group = "qonto"
