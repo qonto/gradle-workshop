@@ -39,6 +39,9 @@ open class QontoGenerateProjectDataTask
     @Input
     val projectVersion: Property<String> = objects.property()
 
+    @Input
+    val projectDescription: Property<String> = objects.property<String>()
+
     @OutputDirectory
     val outputDir: DirectoryProperty =
         objects
@@ -62,10 +65,9 @@ open class QontoGenerateProjectDataTask
         logger.quiet("Project group: ${projectGroup.get()}")
         logger.quiet("Project name: ${projectName.get()}")
         logger.quiet("Project version: ${projectVersion.get()}")
+        logger.quiet("Project description: ${projectDescription.get()}")
 
-        outputDir.get().asFile.apply {
-            mkdirs()
-        }
+        outputDir.get().asFile.mkdirs()
         outputFile.get().asFile.apply {
             createNewFile()
             writeText(
@@ -76,6 +78,7 @@ open class QontoGenerateProjectDataTask
                         const val group: String = "${projectGroup.get()}"
                         const val name: String = "${projectName.get()}"
                         const val version: String = "${projectVersion.get()}"
+                        const val description: String = "${projectDescription.get()}"
                     }
                 """.trimIndent(),
             )
@@ -86,7 +89,7 @@ open class QontoGenerateProjectDataTask
 
         const val NAME: String = "generateProjectData"
 
-        fun register(project: Project) {
+        fun register(project: Project, qontoExtension: QontoExtension) {
             val generateProjectData: TaskProvider<QontoGenerateProjectDataTask> =
                 project.tasks.register<QontoGenerateProjectDataTask>(
                     name = NAME,
@@ -97,6 +100,7 @@ open class QontoGenerateProjectDataTask
                 projectGroup.set(project.provider { "${project.group}" })
                 projectName.set(project.provider { project.name })
                 projectVersion.set(project.provider { "${project.version}" })
+                projectDescription.set(qontoExtension.projectDescription)
             }
 
             project.tasks.named(BasePlugin.ASSEMBLE_TASK_NAME).configure {
