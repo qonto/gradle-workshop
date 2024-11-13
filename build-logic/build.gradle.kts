@@ -2,6 +2,15 @@ plugins {
     `kotlin-dsl`
 }
 
+gradlePlugin {
+    plugins {
+        register("QontoPlugin") {
+            id = "qonto"
+            implementationClass = "com.qonto.QontoPlugin"
+        }
+    }
+}
+
 dependencies {
     implementation(libs.plugins.kotlin.jvm.artifact)
 }
