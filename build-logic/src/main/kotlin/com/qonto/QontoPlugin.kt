@@ -8,9 +8,10 @@ import org.gradle.kotlin.dsl.apply
 class QontoPlugin : Plugin<Project> {
 
     override fun apply(target: Project) {
+        val qontoExtension: QontoExtension = QontoExtension.register(target)
         target.pluginManager.apply(BasePlugin::class)
         target.logger.quiet("Hello from QontoPlugin!")
 
-        QontoGenerateProjectDataTask.register(target)
+        QontoGenerateProjectDataTask.register(target, qontoExtension)
     }
 }
