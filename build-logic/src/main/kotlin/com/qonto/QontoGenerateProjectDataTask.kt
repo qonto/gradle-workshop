@@ -60,6 +60,22 @@ open class QontoGenerateProjectDataTask
         logger.quiet("Project group: ${projectGroup.get()}")
         logger.quiet("Project name: ${projectName.get()}")
         logger.quiet("Project version: ${projectVersion.get()}")
+
+        outputFile.get().asFile.apply {
+            parentFile.mkdirs()
+            createNewFile()
+            writeText(
+                """
+                    package com.qonto
+                    
+                    data object Project {
+                        const val group: String = "${projectGroup.get()}"
+                        const val name: String = "${projectName.get()}"
+                        const val version: String = "${projectVersion.get()}"
+                    }
+                """.trimIndent(),
+            )
+        }
     }
 
     companion object {
