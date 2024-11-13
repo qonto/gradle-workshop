@@ -39,6 +39,9 @@ open class QontoGenerateProjectDataTask
     @TaskAction
     fun run() {
         logger.quiet("Generating project data...")
+        logger.quiet("Project group: ${projectGroup.get()}")
+        logger.quiet("Project name: ${projectName.get()}")
+        logger.quiet("Project version: ${projectVersion.get()}")
     }
 
     companion object {
@@ -51,6 +54,13 @@ open class QontoGenerateProjectDataTask
                     name = NAME,
                     LoggerFactory.getLogger("qonto"),
                 )
+
+            generateProjectData.configure {
+                projectGroup.set(project.provider { "${project.group}" })
+                projectName.set(project.provider { project.name })
+                projectVersion.set(project.provider { "${project.version}" })
+            }
+
             project.tasks.named(BasePlugin.ASSEMBLE_TASK_NAME).configure {
                 dependsOn(generateProjectData)
             }
