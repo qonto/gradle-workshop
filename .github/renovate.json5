@@ -1,0 +1,21 @@
+{
+  $schema: 'https://docs.renovatebot.com/renovate-schema.json',
+  extends: [
+    'config:recommended',
+  ],
+  packageRules: [
+    {
+      matchUpdateTypes: [
+        'major',
+        'minor',
+        'patch',
+      ],
+      groupName: 'all dependencies',
+      minimumReleaseAge: '6 hours',
+      matchPackageNames: [
+        '*',
+      ],
+    },
+  ],
+  prConcurrentLimit: 2,
+}
