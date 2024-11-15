@@ -119,7 +119,7 @@ version = "1.0.0"
 
 </details>
 
-## Step 2: Create the QontoGenerateProjectDataTask task [IN PROGRESS]
+## Step 2: Create the QontoGenerateProjectDataTask task ✅
 
 <details>
 <summary>Create a task with the minimum amount of code.</summary>
@@ -273,7 +273,7 @@ open class QontoGenerateProjectDataTask
 
 </details>
 
-## Step 3: Add inputs and outputs to the task
+## Step 3: Add inputs and outputs to the task [IN PROGRESS]
 
 <details>
 <summary>Make the task cacheable.</summary>
