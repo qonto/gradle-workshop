@@ -258,7 +258,7 @@ open class QontoGenerateProjectDataTask
 
 </details>
 
-## Step 3: Add inputs and outputs to the task [IN PROGRESS]
+## Step 3: Add inputs and outputs to the task ✅
 
 <details>
 <summary>Make the task cacheable.</summary>
@@ -466,7 +466,7 @@ open class QontoGenerateProjectDataTask
 
 </details>
 
-## Step 4: Change the task implementation to codegen a file and wire it with the Kotlin source set
+## Step 4: Change the task implementation to codegen a file and wire it with the Kotlin source set [IN PROGRESS]
 
 <details>
 <summary>Change the task implementation to generate a file by using the inputs and outputs.</summary>
