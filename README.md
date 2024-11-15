@@ -14,7 +14,7 @@ To run the application, use the next CLI command:
 ./gradlew run
 ```
 
-## Step 1: Create the Qonto plugin
+## Step 1: Create the Qonto plugin [IN PROGRESS]
 
 <details>
 <summary>Create the Gradle plugin by extending the `Plugin` interface.</summary>
