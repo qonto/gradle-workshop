@@ -14,7 +14,7 @@ To run the application, use the next CLI command:
 ./gradlew run
 ```
 
-## Step 1: Create the Qonto plugin [IN PROGRESS]
+## Step 1: Create the Qonto plugin ✅
 
 <details>
 <summary>Create the Gradle plugin by extending the `Plugin` interface.</summary>
@@ -104,7 +104,7 @@ version = "1.0.0"
 
 </details>
 
-## Step 2: Create the QontoGenerateProjectDataTask task
+## Step 2: Create the QontoGenerateProjectDataTask task [IN PROGRESS]
 
 <details>
 <summary>Create a task with the minimum amount of code.</summary>
