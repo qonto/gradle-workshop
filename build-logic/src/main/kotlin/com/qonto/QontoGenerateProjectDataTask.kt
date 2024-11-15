@@ -16,6 +16,7 @@ import org.gradle.api.tasks.Internal
 import org.gradle.api.tasks.OutputDirectory
 import org.gradle.api.tasks.TaskAction
 import org.gradle.api.tasks.TaskProvider
+import org.gradle.api.tasks.options.Option
 import org.gradle.kotlin.dsl.configure
 import org.gradle.kotlin.dsl.property
 import org.gradle.kotlin.dsl.register
@@ -40,6 +41,7 @@ open class QontoGenerateProjectDataTask
     val projectVersion: Property<String> = objects.property()
 
     @Input
+    @Option(option = "projectDescription", description = "The project description")
     val projectDescription: Property<String> = objects.property<String>()
 
     @OutputDirectory
