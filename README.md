@@ -466,7 +466,7 @@ open class QontoGenerateProjectDataTask
 
 </details>
 
-## Step 4: Change the task implementation to codegen a file and wire it with the Kotlin source set [IN PROGRESS]
+## Step 4: Change the task implementation to codegen a file and wire it with the Kotlin source set ✅
 
 <details>
 <summary>Change the task implementation to generate a file by using the inputs and outputs.</summary>
@@ -631,7 +631,7 @@ fun main() {
 
 </details>
 
-## Step 5: Create the QontoExtension to allow the user to specify default values
+## Step 5: Create the QontoExtension to allow the user to specify default values [IN PROGRESS]
 
 <details>
 <summary>Create the QontoExtension.</summary>
