@@ -858,7 +858,7 @@ fun main() {
 
 </details>
 
-## Step 6: Change one task's input to be an option [IN PROGRESS]
+## Step 6: Change one task's input to be an option ✅
 
 <details>
 <summary>Change the task's input to be an option.</summary>
