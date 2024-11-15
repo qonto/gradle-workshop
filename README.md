@@ -631,7 +631,7 @@ fun main() {
 
 </details>
 
-## Step 5: Create the QontoExtension to allow the user to specify default values [IN PROGRESS]
+## Step 5: Create the QontoExtension to allow the user to specify default values ✅
 
 <details>
 <summary>Create the QontoExtension.</summary>
@@ -858,7 +858,7 @@ fun main() {
 
 </details>
 
-## Step 6: Change one task's input to be an option
+## Step 6: Change one task's input to be an option [IN PROGRESS]
 
 <details>
 <summary>Change the task's input to be an option.</summary>
