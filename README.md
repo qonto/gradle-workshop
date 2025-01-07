@@ -960,11 +960,13 @@ abstract class QontoGenerateProjectDataTask
     @TaskAction
     fun run() {
         if (!projectVersion.get().matches(VersionRegex)) {
-            problems.reporter.throwing {
-                id("invalid-version", "The project version is invalid")
+            val problemGroup: ProblemGroup = ProblemGroup.create("qonto", "qonto")
+            val problemId: ProblemId =
+                ProblemId.create("invalid-version", "invalid-version", problemGroup)
+            val exception = IllegalStateException("The project version is invalid")
+            problems.reporter.throwing(exception, problemId) {
                 contextualLabel("The project version '${projectVersion.get()}' is invalid")
                 severity(Severity.ERROR)
-                withException(IllegalStateException("The project version is invalid"))
                 solution("Provide a valid version (example: 'project.version = 1.0.0')")
             }
         }
