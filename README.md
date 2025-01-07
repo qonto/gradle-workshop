@@ -858,7 +858,7 @@ fun main() {
 
 </details>
 
-## Step 6: Change one task's input to be an option [IN PROGRESS]
+## Step 6: Change one task's input to be an option ✅
 
 <details>
 <summary>Change the task's input to be an option.</summary>
@@ -905,5 +905,73 @@ open class QontoGenerateProjectDataTask
 ```
 
 - Check the output to see the new project description.
+
+</details>
+
+## Step 7: Add version validation report with `Problems` API [IN PROGRESS]
+
+<details>
+<summary>Gradle documentation about the `Problems` API</summary>
+
+Gradle has a `Problems` API that allows you to report problems. The docs can be found:
+
+- [Reporting problems](https://docs.gradle.org/current/userguide/reporting_problems.html#sec:reporting_problems)
+- [Reporting and receiving problems via the Problems API Sample](https://docs.gradle.org/current/samples/sample_problems_api_usage.html)
+
+It is very simple, the `Problems` interface is injected in any place you want to do a report, it can
+be a plugin, a task, etc. Then you can use the `reporting` or `throwing` methods to report a
+problem.
+</details>
+
+<details>
+<summary>Update the task `QontoGenerateProjectDataTask` to report an invalid version</summary>
+
+```kotlin
+
+@CacheableTask
+abstract class QontoGenerateProjectDataTask
+@Inject constructor(
+    private val logger: Logger,
+    objects: ObjectFactory,
+    layout: ProjectLayout,
+) : DefaultTask() {
+
+    // Inject via constructor fails in Gradle 8.12, move to constructor when it is fixed
+    @get:Inject
+    abstract val problems: Problems
+
+    // ...
+
+    @TaskAction
+    fun run() {
+        if (!projectVersion.get().matches(VersionRegex)) {
+            problems.reporter.throwing {
+                id("invalid-version", "The project version is invalid")
+                contextualLabel("The project version '${projectVersion.get()}' is invalid")
+                severity(Severity.ERROR)
+                withException(IllegalStateException("The project version is invalid"))
+                solution("Provide a valid version (example: 'project.version = 1.0.0')")
+            }
+        }
+
+        // ...
+    }
+
+    companion object {
+        // ...
+
+        private val VersionRegex = Regex(
+            """^(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)(?:-((?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*)(?:\.(?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*))*))?(?:\+([0-9a-zA-Z-]+(?:\.[0-9a-zA-Z-]+)*))?${'$'}""",
+        )
+    }
+}
+```
+
+After calling the task, if the `project::version` assigned in the `build.gradle.kts` file is not
+valid, the build will fail and the error will be added to the problems report file, which can be
+found in `gradle-workshop/build/reports/problems/problems-reports.html`.
+
+The file is in the `build` root directory as it will summarize all the problems in the whole
+project, that includes all Gradle projects.
 
 </details>
