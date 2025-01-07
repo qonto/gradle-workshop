@@ -1,3 +1,5 @@
+@file:Suppress("UnstableApiUsage")
+
 package com.qonto
 
 import javax.inject.Inject
@@ -9,6 +11,10 @@ import org.gradle.api.file.RegularFileProperty
 import org.gradle.api.logging.Logger
 import org.gradle.api.model.ObjectFactory
 import org.gradle.api.plugins.BasePlugin
+import org.gradle.api.problems.ProblemGroup
+import org.gradle.api.problems.ProblemId
+import org.gradle.api.problems.Problems
+import org.gradle.api.problems.Severity
 import org.gradle.api.provider.Property
 import org.gradle.api.tasks.CacheableTask
 import org.gradle.api.tasks.Input
@@ -24,12 +30,16 @@ import org.jetbrains.kotlin.gradle.dsl.KotlinProjectExtension
 import org.slf4j.LoggerFactory
 
 @CacheableTask
-open class QontoGenerateProjectDataTask
+abstract class QontoGenerateProjectDataTask
 @Inject constructor(
     private val logger: Logger,
     objects: ObjectFactory,
     layout: ProjectLayout,
 ) : DefaultTask() {
+
+    // Inject via constructor fails in Gradle 8.12, move to constructor when it is fixed
+    @get:Inject
+    abstract val problems: Problems
 
     @Input
     val projectGroup: Property<String> = objects.property()
@@ -63,6 +73,18 @@ open class QontoGenerateProjectDataTask
 
     @TaskAction
     fun run() {
+        if (!projectVersion.get().matches(VersionRegex)) {
+            val problemGroup: ProblemGroup = ProblemGroup.create("qonto", "qonto")
+            val problemId: ProblemId =
+                ProblemId.create("invalid-version", "invalid-version", problemGroup)
+            val exception = IllegalStateException("The project version is invalid")
+            problems.reporter.throwing(exception, problemId) {
+                contextualLabel("The project version '${projectVersion.get()}' is invalid")
+                severity(Severity.ERROR)
+                solution("Provide a valid version (example: 'project.version = 1.0.0')")
+            }
+        }
+
         logger.quiet("Generating project data...")
         logger.quiet("Project group: ${projectGroup.get()}")
         logger.quiet("Project name: ${projectName.get()}")
@@ -90,6 +112,10 @@ open class QontoGenerateProjectDataTask
     companion object {
 
         const val NAME: String = "generateProjectData"
+
+        private val VersionRegex = Regex(
+            """^(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)(?:-((?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*)(?:\.(?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*))*))?(?:\+([0-9a-zA-Z-]+(?:\.[0-9a-zA-Z-]+)*))?${'$'}""",
+        )
 
         fun register(project: Project, qontoExtension: QontoExtension) {
             val generateProjectData: TaskProvider<QontoGenerateProjectDataTask> =
