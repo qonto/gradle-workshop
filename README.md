@@ -923,7 +923,7 @@ open class QontoGenerateProjectDataTask
 
 </details>
 
-## Step 7: Add version validation report with `Problems` API [IN PROGRESS]
+## Step 7: Add version validation report with `Problems` API ✅
 
 <details>
 <summary>Gradle documentation about the `Problems` API</summary>
